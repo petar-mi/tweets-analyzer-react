@@ -89,7 +89,8 @@ class SendReq extends Component {
     postDataHandler = (username) => {
         this.setState({ showSpinner: true });
 
-        axios.get(`http://localhost:8080/checkUser/${username}`)
+        // axios.get(`http://localhost:8080/checkUser/${username}`)
+        axios.get(`https://my-express-server.herokuapp.com/checkUser/${username}`)
             .then(response => {
                 console.log(response);
                 console.log(this.state.userDbObj);

@@ -56,7 +56,8 @@ class Posts extends Component {
     sumValues = obj => obj.reduce((a, b) => a + b.quantity, 0);
 
     sendToServerHandler = () => {
-        axios.post('http://localhost:8080/feed', {
+        // axios.post('http://localhost:8080/feed', { 
+        axios.post('https://my-express-server.herokuapp.com/feed', {
             editedTweets: this.state.tweets,
             userDbObj: this.state.userDbObj
         })
@@ -158,7 +159,8 @@ class Posts extends Component {
             console.log(message);
         }
 
-        axios.get(`http://localhost:8080/user/${this.props.user}`, {
+        // axios.get(`http://localhost:8080/user/${this.props.user}`, {
+        axios.get(`https://my-express-server.herokuapp.com/user/${this.props.user}`, {
             params: {
                 userDbObj: this.state.userDbObj
             }
