@@ -8,8 +8,6 @@ import Spinner from './Spinner';
 import styles from './SendReq.module.scss';
 
 
-//import './NewPost.css';
-
 class SendReq extends Component {
     state = {
         username: '',
