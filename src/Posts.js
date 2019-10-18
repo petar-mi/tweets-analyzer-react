@@ -33,8 +33,8 @@ class Posts extends Component {
             { cat: "unknown", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -4.25, xPosition: -4, sphereY: -1, sphereX: 0 },
         ],
         //endpoint: "http://192.168.0.16:8080/my-namespace", // // lokalna adresa za Buska Linux on lenovo laptop 
-        endpoint: "http://127.0.0.1:8080/my-namespace", // lokalna adresa za Zec Linux on desktop nvme M.2
-        // endpoint: "https://my-express-server.herokuapp.com/my-namespace",
+        //endpoint: "http://127.0.0.1:8080/my-namespace", // lokalna adresa za Zec Linux on desktop nvme M.2
+        endpoint: "https://my-express-server.herokuapp.com/my-namespace",
         twAccountNonExistent: false,
         showTwAccountNonExistentMessage: false,
         userDbObj: this.props.userDbObj,
@@ -59,8 +59,8 @@ class Posts extends Component {
     sumValues = obj => obj.reduce((a, b) => a + b.quantity, 0);
 
     sendToServerHandler = () => {
-        axios.post('http://localhost:8080/feed', {
-            // axios.post('https://my-express-server.herokuapp.com/feed', {
+        // axios.post('http://localhost:8080/feed', {
+        axios.post('https://my-express-server.herokuapp.com/feed', {
             editedTweets: this.state.tweets,
             userDbObj: this.state.userDbObj
         })
@@ -167,8 +167,8 @@ class Posts extends Component {
         socket.on('error', console.error.bind(console));
         socket.on('message', console.log.bind(console));
 
-        axios.get(`http://localhost:8080/user/${this.props.user}`, {
-            // axios.get(`https://my-express-server.herokuapp.com/user/${this.props.user}`, {
+        // axios.get(`http://localhost:8080/user/${this.props.user}`, {
+        axios.get(`https://my-express-server.herokuapp.com/user/${this.props.user}`, {
             params: {
                 userDbObj: this.state.userDbObj
             }
