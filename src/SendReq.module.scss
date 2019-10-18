@@ -53,6 +53,7 @@ body {background: $main-color;}
 
 label {
   position: absolute;
+  display: block;
   top: $width/15;
   color: #999999;
   font: 400 $width/15;

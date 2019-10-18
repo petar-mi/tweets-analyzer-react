@@ -14,27 +14,29 @@ class Posts extends Component {
         tweets: [],
         count: [
             { cat: "arts, culture and entertainment", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 4, xPosition: -8, sphereY: -1, sphereX: -3 },
-            { cat: "crime, law and justice", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -1.75,      xPosition: -6, sphereY: -0.5, sphereX: -2  },
-            { cat: "disaster and accident", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -1.25,       xPosition: 2, sphereY: 0, sphereX: -1  },
-            { cat: "economy, business and finance", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 2.5, xPosition: 1, sphereY: 0.5, sphereX: 0  },
-            { cat: "education", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -0.25,                   xPosition: 2.5, sphereY: 1, sphereX: 1  },
-            { cat: "environmental issue", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -3,            xPosition: -6.5, sphereY: -1, sphereX: 2  },
-            { cat: "health", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 3,                          xPosition: -3, sphereY: -0.5, sphereX: 3  },
-            { cat: "human interest", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -3.5,               xPosition: -8.25, sphereY: 0.5, sphereX: -3  },
-            { cat: "labour", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 2,                          xPosition: -5.5, sphereY: 1, sphereX: -2  },
-            { cat: "lifestyle and leisure", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -2.5,        xPosition: -1.25, sphereY: -1, sphereX: -1  },
-            { cat: "politics", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 3.5,                      xPosition: 3, sphereY: -0.5, sphereX: 0  },
-            { cat: "religion and belief", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -0.75,         xPosition: -5, sphereY: 0.5, sphereX: 1  },
-            { cat: "science and technology", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 0,          xPosition: -7.75, sphereY: 1, sphereX: 2  },
-            { cat: "social issue", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -3.75,                xPosition: 2.25, sphereY: -1, sphereX: 3  },
-            { cat: "sport", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 1,                           xPosition: -2, sphereY: -0.5, sphereX: -3  },
-            { cat: "unrest, conflicts and war", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 1.5,     xPosition: -7.5, sphereY: 0.5, sphereX: -2  },
-            { cat: "weather", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 1,                         xPosition: -7, sphereY: 1, sphereX: -1  },
-            { cat: "unknown", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -4.25,                     xPosition: -4, sphereY: -1, sphereX: 0  },
+            { cat: "crime, law and justice", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -1.75, xPosition: -6, sphereY: -0.5, sphereX: -2 },
+            { cat: "disaster and accident", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -1.25, xPosition: 2, sphereY: 0, sphereX: -1 },
+            { cat: "economy, business and finance", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 2.5, xPosition: 1, sphereY: 0.5, sphereX: 0 },
+            { cat: "education", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -0.25, xPosition: 2.5, sphereY: 1, sphereX: 1 },
+            { cat: "environmental issue", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -3, xPosition: -6.5, sphereY: -1, sphereX: 2 },
+            { cat: "health", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 3, xPosition: -3, sphereY: -0.5, sphereX: 3 },
+            { cat: "human interest", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -3.5, xPosition: -8.25, sphereY: 0.5, sphereX: -3 },
+            { cat: "labour", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 2, xPosition: -5.5, sphereY: 1, sphereX: -2 },
+            { cat: "lifestyle and leisure", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -2.5, xPosition: -1.25, sphereY: -1, sphereX: -1 },
+            { cat: "politics", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 3.5, xPosition: 3, sphereY: -0.5, sphereX: 0 },
+            { cat: "religion and belief", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -0.75, xPosition: -5, sphereY: 0.5, sphereX: 1 },
+            { cat: "science and technology", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 0, xPosition: -7.75, sphereY: 1, sphereX: 2 },
+            { cat: "social issue", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -3.75, xPosition: 2.25, sphereY: -1, sphereX: 3 },
+            { cat: "sport", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 1, xPosition: -2, sphereY: -0.5, sphereX: -3 },
+            { cat: "unrest, conflicts and war", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 1.5, xPosition: -7.5, sphereY: 0.5, sphereX: -2 },
+            { cat: "weather", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: 1, xPosition: -7, sphereY: 1, sphereX: -1 },
+            { cat: "unknown", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -4.25, xPosition: -4, sphereY: -1, sphereX: 0 },
         ],
-        // endpoint: "http://192.168.0.16:8080/my-namespace",
-        endpoint: "https://my-express-server.herokuapp.com/my-namespace",
+        //endpoint: "http://192.168.0.16:8080/my-namespace", // // lokalna adresa za Buska Linux on lenovo laptop 
+        endpoint: "http://127.0.0.1:8080/my-namespace", // lokalna adresa za Zec Linux on desktop nvme M.2
+        // endpoint: "https://my-express-server.herokuapp.com/my-namespace",
         twAccountNonExistent: false,
+        showTwAccountNonExistentMessage: false,
         userDbObj: this.props.userDbObj,
         showToServerButton: false,
     };
@@ -57,8 +59,8 @@ class Posts extends Component {
     sumValues = obj => obj.reduce((a, b) => a + b.quantity, 0);
 
     sendToServerHandler = () => {
-        // axios.post('http://localhost:8080/feed', { 
-        axios.post('https://my-express-server.herokuapp.com/feed', {
+        axios.post('http://localhost:8080/feed', {
+            // axios.post('https://my-express-server.herokuapp.com/feed', {
             editedTweets: this.state.tweets,
             userDbObj: this.state.userDbObj
         })
@@ -70,17 +72,24 @@ class Posts extends Component {
             });
     }
 
+    refreshPage = () => { // reloaduje celu React app 
+        //this.setState({ showTwAccountNonExistentMessage: true })
+        if (this.props.showSpinner) this.props.hideSpinner();
+        if (!this.props.twAccountNonExistentMessageState) this.props.showTwAccountNonExistentMessage();
+        //setTimeout(() => window.location.reload(true), 4000);  // ako je argument true ucitava je ponovo sa servera, ako je false iz cache-a
+    }
+
 
     // componentDidUpdate(prevProps, prevState, snapshot) {
-        // if (prevState.name === "ReactJS" && this.state.name === "VueJS") {
-        //     this.setState({ name: "Angular" })
-        // }
+    // if (prevState.name === "ReactJS" && this.state.name === "VueJS") {
+    //     this.setState({ name: "Angular" })
+    // }
     // }
 
 
     componentDidMount() {
 
-    
+
 
         if (this.props.includeArchivedTweets) {
             console.log(this.props.archivedTweets);
@@ -121,10 +130,10 @@ class Posts extends Component {
         const socket = socketIOClient(endpoint);
 
         socket.on('welcome', function (data) {
-            addMessage(data.message);
+            console.log(data.message);
 
             // Respond with a message including this clients' id sent from the server
-            socket.emit('i am client', { data: 'foo!', id: data.id });
+            socket.emit('i am client', { data: 'I am client and my id is: ', id: data.id });
         });
 
         socket.on('singleTweetAnalysed', function (data) {
@@ -158,20 +167,16 @@ class Posts extends Component {
         socket.on('error', console.error.bind(console));
         socket.on('message', console.log.bind(console));
 
-        function addMessage(message) {
-            console.log(message);
-        }
-
-        // axios.get(`http://localhost:8080/user/${this.props.user}`, {
-        axios.get(`https://my-express-server.herokuapp.com/user/${this.props.user}`, {
+        axios.get(`http://localhost:8080/user/${this.props.user}`, {
+            // axios.get(`https://my-express-server.herokuapp.com/user/${this.props.user}`, {
             params: {
                 userDbObj: this.state.userDbObj
             }
         })
             .then(response => {
                 console.log(response);
-                console.log(response.data.message);
-                if (response.status === 200)  this.setState({ showToServerButton: true });
+                if (response.data.message) console.log(response.data.message);
+                if (response.status === 200 && response.data.message !== "Ne postoji takav twitter profil") this.setState({ showToServerButton: true });
                 if (response.data.message === "Ne postoji takav twitter profil") {
                     this.setState({ twAccountNonExistent: true });
                 }
@@ -179,39 +184,6 @@ class Posts extends Component {
                 if (response.data.newUserObj) {
                     this.setState({ userDbObj: response.data.newUserObj });
                 }
-                // deo koji sledi je za varijantu bez socket.io u kom slucaju se tek nakon obrade svih tvitova vraca odgovor sa servera
-                // const updatePosts = response.data.map((tweet, index) => { // stvaramo novi niz objekata
-                //     return {
-                //         text: tweet, // tako sto spreadujemo postojece propertije objekata dobijenih sa servera
-                //         id: index, // i dodajemo jos jedan property
-                //     }
-                // })
-
-
-                // this.setState({
-                //     //posts: updatePosts
-                //     posts: { tweets: response.data.tweets },
-                //     count: {
-                //         artsCultureAndEntertainment: response.data.classificationCount.artsCultureAndEntertainmentCounter,
-                //         crimeLawAndJustice: response.data.classificationCount.crimeLawAndJusticeCounter,
-                //         disasterAndAccident: response.data.classificationCount.disasterAndAccidentCounter,
-                //         economyBusinessAndFinance: response.data.classificationCount.economyBusinessAndFinanceCounter,
-                //         education: response.data.classificationCount.educationCounter,
-                //         environmentalIssue: response.data.classificationCount.environmentalIssueCounter,
-                //         health: response.data.classificationCount.healthCounter,
-                //         humanInterest: response.data.classificationCount.humanInterestCounter,
-                //         labour: response.data.classificationCount.labourCounter,
-                //         lifestyleAndLeisure: response.data.classificationCount.lifestyleAndLeisureCounter,
-                //         politics: response.data.classificationCount.politicsCounter,
-                //         religionAndBelief: response.data.classificationCount.religionAndBeliefCounter,
-                //         scienceAndTechnology: response.data.classificationCount.scienceAndTechnologyCounter,
-                //         socialIssue: response.data.classificationCount.socialIssueCounter,
-                //         sport: response.data.classificationCount.sportCounter,
-                //         unrestConflictsAndWar: response.data.classificationCount.unrestConflictsAndWarCounter,
-                //         weather: response.data.classificationCount.weatherCounter
-                //     }
-                // })
-
             })
             .catch(function (error) {
                 console.log(error);
@@ -221,7 +193,7 @@ class Posts extends Component {
     render() {
 
         let categories = <p style={{ textAlign: 'center' }}>{this.state.errorMessage}</p>;
-        const twAccountNonExistentMessage = <p style={{ fontSize: "14px", textAlign: 'center' }}>Twitter account doesn't exist</p>;
+
 
         let toServerButton = <button onClick={this.sendToServerHandler} >Send all back to server</button>;
 
@@ -247,15 +219,17 @@ class Posts extends Component {
             <section className="Posts">
                 {this.state.showToServerButton ? toServerButton : null}
                 {categories}
-                {this.state.twAccountNonExistent ? twAccountNonExistentMessage : null}
-                <ThreeScene count={this.state.count}
-                            tweets={this.state.tweets}
-                            totalTweetsCount={this.sumValues(this.state.count)}
-                            categoryEdited={(e) => this.categoryEdited(e)} 
-                            sendToServer={(e) => this.sendToServerHandler(e)}
-                            showToServerButton={this.state.showToServerButton}
-                            showSpinner={this.props.showSpinner}
-                            hideSpinner={() => this.props.hideSpinner()} />
+
+                {this.state.twAccountNonExistent ? this.refreshPage() : <ThreeScene count={this.state.count}
+                    tweets={this.state.tweets}
+                    totalTweetsCount={this.sumValues(this.state.count)}
+                    categoryEdited={(e) => this.categoryEdited(e)}
+                    sendToServer={(e) => this.sendToServerHandler(e)}
+                    showToServerButton={this.state.showToServerButton}
+                    showSpinner={this.props.showSpinner}
+                    hideSpinner={() => this.props.hideSpinner()} />}
+
+
             </section>
         )
     }
