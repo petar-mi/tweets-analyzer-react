@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import socketIOClient from "socket.io-client";
-//import Post from '../../../components/Post/Post';
-// import { Link } from 'react-router-dom'; ukoliko koristimo <Link> da postovi budu klikabilni tj. ako ne koristimo this.props.history.push
-//import './Posts.css';
 import Category from './Category';
 import ThreeScene from './ThreeScene';
 
@@ -73,24 +70,11 @@ class Posts extends Component {
     }
 
     refreshPage = () => { // reloaduje celu React app 
-        //this.setState({ showTwAccountNonExistentMessage: true })
         if (this.props.showSpinner) this.props.hideSpinner();
         if (!this.props.twAccountNonExistentMessageState) this.props.showTwAccountNonExistentMessage();
-        //setTimeout(() => window.location.reload(true), 4000);  // ako je argument true ucitava je ponovo sa servera, ako je false iz cache-a
     }
 
-
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    // if (prevState.name === "ReactJS" && this.state.name === "VueJS") {
-    //     this.setState({ name: "Angular" })
-    // }
-    // }
-
-
     componentDidMount() {
-
-
-
         if (this.props.includeArchivedTweets) {
             console.log(this.props.archivedTweets);
 
@@ -132,8 +116,7 @@ class Posts extends Component {
         socket.on('welcome', function (data) {
             console.log(data.message);
 
-            // Respond with a message including this clients' id sent from the server
-            socket.emit('i am client', { data: 'I am client and my id is: ', id: data.id });
+            socket.emit('i am client', { data: 'I am client and my id is: ', id: data.id }); // Respond with a message including this clients' id sent from the server
         });
 
         socket.on('singleTweetAnalysed', function (data) {
@@ -144,12 +127,6 @@ class Posts extends Component {
                 console.log(message.category);
                 console.log(message.id);
                 console.log('**************');
-
-                // this.setState(function (prevState, props) {
-                //     return {
-                //         counter: prevState.counter + props.increment
-                //     };
-                // });
 
                 this.setState(prevState => ({
                     tweets: [...prevState.tweets, {
@@ -228,8 +205,6 @@ class Posts extends Component {
                     showToServerButton={this.state.showToServerButton}
                     showSpinner={this.props.showSpinner}
                     hideSpinner={() => this.props.hideSpinner()} />}
-
-
             </section>
         )
     }

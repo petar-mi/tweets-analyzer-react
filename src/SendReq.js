@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Posts from './Posts';
-// import socketIOClient from "socket.io-client";
-// import { Redirect } from 'react-router-dom'; // ako zelimo da koristimo Redirect komponentu
-//import ThreeScene from './ThreeScene';
 import Spinner from './Spinner';
 import styles from './SendReq.module.scss';
-// import { Route, NavLink, Link, Switch } from 'react-router-dom';
-// import { BrowserRouter } from 'react-router-dom';
 
 
 class SendReq extends Component {
@@ -21,74 +16,15 @@ class SendReq extends Component {
         userDbObj: {},
         showSpinner: false,
         showTwAccountNonExistentMessage: false,
-
-        // endpoint: "http://192.168.0.16:8080/my-namespace"
-        //submitted: false // ovo je za slucaj da koristimo Redirect
     }
 
     componentDidMount() {
-        console.log(this.props); // ovde mozemo videti props koje nam daje react-router kao sto su history, location i match
-        console.log(this.state);
-        // const endpoint = this.state.endpoint;
-        // const socket = socketIOClient(endpoint);
-        // socket.on('welcome', function(data) {
-        //     addMessage(data.message);
-
-        //     // Respond with a message including this clients' id sent from the server
-        //     socket.emit('i am client', {data: 'foo!', id: data.id});
-        // });
-        // // socket.on('time', function(data) {
-        // //     addMessage(data.time);
-        // // });
-
-        // socket.on('singleTweetAnalysed', function(data) {
-        //     logAnalysedTweet(data);
-        // });
-
-        // socket.on('error', console.error.bind(console));
-        // socket.on('message', console.log.bind(console));
-
-        // function addMessage(message) {
-        //     console.log(message);
-        // }
-        // function logAnalysedTweet(message) {
-        //     console.log(message.text);
-        //     console.log(message.category);
-        //     console.log(message.id);
-        //     console.log('**************');
-        // }
+        // console.log(this.props); // ovde mozemo videti props koje nam daje react-router kao sto su history, location i match
+        // console.log(this.state);
     }
 
     componentDidUpdate() {
-        console.log("componentDidUpdate", this.state.showSpinner); // ovde mozemo videti props koje nam daje react-router kao sto su history, location i match
-        // const endpoint = this.state.endpoint;
-        // const socket = socketIOClient(endpoint);
-        // socket.on('welcome', function(data) {
-        //     addMessage(data.message);
-
-        //     // Respond with a message including this clients' id sent from the server
-        //     socket.emit('i am client', {data: 'foo!', id: data.id});
-        // });
-        // // socket.on('time', function(data) {
-        // //     addMessage(data.time);
-        // // });
-
-        // socket.on('singleTweetAnalysed', function(data) {
-        //     logAnalysedTweet(data);
-        // });
-
-        // socket.on('error', console.error.bind(console));
-        // socket.on('message', console.log.bind(console));
-
-        // function addMessage(message) {
-        //     console.log(message);
-        // }
-        // function logAnalysedTweet(message) {
-        //     console.log(message.text);
-        //     console.log(message.category);
-        //     console.log(message.id);
-        //     console.log('**************');
-        // }
+        //console.log("componentDidUpdate", this.state.showSpinner); // ovde mozemo videti props koje nam daje react-router kao sto su history, location i match
     }
 
     postDataHandler = (username) => {
@@ -123,7 +59,6 @@ class SendReq extends Component {
 
     bezArhiviranihPodatakaHandler = () => {
         this.setState({
-            //showComponent: true,
             showSpinner: true
         });
 
@@ -132,7 +67,6 @@ class SendReq extends Component {
 
     saArhiviranimPodatacimaHandler = () => {
         this.setState({
-            // showComponent: true,
             includeArchivedTweets: true,
             showSpinner: true
         });
@@ -157,7 +91,6 @@ class SendReq extends Component {
 
     render() {
         let upitnik = (
-            // <div style={{ clear: 'both', color: '#999999', paddingTop: '20px', textAlign: 'center' }}>
             <div className={styles.centered} style={{ textAlign: 'center', color: '#999999' }}>
                 <div style={{ marginBottom: '25px' }}>
                     <p>User exists in a database.</p>
@@ -179,34 +112,11 @@ class SendReq extends Component {
 
         const twAccountNonExistentMessage = <div style={{ fontSize: "35px", top: "400px", bottom: 0, right: 0, left: 0, margin: 'auto', width: "550px", height: "110px", position: "absolute", fontWeight: "bold", color: "#FF0000" }}>Twitter account doesn't exist. Please try again.</div>;// styles imitira stil centered klase od inputa iznad, s tim sto dodaje top=400px kako bi se smestilo ispod
 
-        // let spinner = null;
-
-        // if (this.state.showSpinner) spinner = <Spinner />;
-
-        // let posts = null;
-
-        // if (this.state.showComponent) {
-        //     posts = (<Posts user={this.state.username} 
-        //             userDbObj={this.state.userDbObj}
-        //             archivedTweets={this.state.archivedTweets} 
-        //             includeArchivedTweets={this.state.includeArchivedTweets}
-        //             hideSpinner={() => this.setState({ showSpinner: false }) }/>)
-        // }
-
-        // let redirect = null; // ako se ne koristi this.props.history
-        //if (this.state.submitted) redirect = <Redirect to="/" />; // ovo nam omogucava uslovni redirect, koji se izvrsava nakon sto postujemo formu (ako se ne koristi this.props.history)
         return (
             <div className="NewPost" style={{ backgroundColor: '#333333', textAlign: "center" }}>
 
-                {/* <label>Enter twitter username</label>
-                <input type="text" value={this.state.username} onChange={(event) => this.setState({ username: event.target.value })} /> */}
-
-
                 {this.state.prikaziUpitnik ? upitnik : inputDiv}
                 {this.state.showTwAccountNonExistentMessage ? twAccountNonExistentMessage : null}
-
-
-
                 {this.state.showSpinner ? <Spinner /> : null}
                 {this.state.showComponent ? <Posts user={this.state.username}
                     userDbObj={this.state.userDbObj}

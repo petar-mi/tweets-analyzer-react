@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import styles from './SingleTweet.module.css';
 
-
-
 class SingleTweet extends Component {
     state = {
         tweet: {
@@ -30,23 +28,9 @@ class SingleTweet extends Component {
                 this.props.categoryEdited({ tweet: this.state.tweet, newCat: this.state.selectedOption.value });
             }
         );
-
     };
 
     render() {
-        // let catInput = (
-        //     // <span>
-        //     //     <input ref="newCatInput" type="text" />
-        //     //     <button onClick={() => this.props.categoryEdited({ tweet: this.state.tweet, newCat: this.refs.newCatInput.value })} >Store</button>
-        //     // </span>
-        //     <span>
-        //         <select ref="newCatInput" onChange={() => this.props.categoryEdited({ tweet: this.state.tweet, newCat: this.refs.newCatInput.value })}>
-        //             {this.props.count.map(item =>
-        //                 <option value={item.cat} key={item.cat}>{item.cat}</option>)}
-        //         </select>
-        //         {/* <button onClick={() => this.props.categoryEdited({ tweet: this.state.tweet, newCat: this.refs.newCatInput.value })} >Store</button> */}
-        //     </span>
-        // );
 
         const options = this.props.count.map(item => {
             //console.log(item);
@@ -71,22 +55,18 @@ class SingleTweet extends Component {
                                     border: `1px solid #ffffff }`,
                                     backgroundColor: '#595959',
                                     height: '100%',
-                                    // borderRadius: 10,
                                     color: "#ffffff"
                                 }),
                                 control: (base, state) => ({
                                     ...base,
                                     background: "#f2f2f2",
                                     borderColor: "grey"
-                                    // borderRadius: 10,
                                 })
                             }} /> : null}
                     </span>
-                    {/* <strong onClick={this.toggleInputHandler}> {this.props.category}</strong>{this.state.showCategoryInput ? catInput : null} */}
                 </div>
         )
     };
 }
-
 
 export default SingleTweet;
