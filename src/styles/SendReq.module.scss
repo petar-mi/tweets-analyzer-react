@@ -10,6 +10,20 @@ $width: 550px; // Change Me
 
 body {background: $main-color;}
 
+.twAccountNonExistentMessage {
+  font-size: 35px; 
+  top: 400px; 
+  bottom: 0; 
+  right: 0;
+  left: 0;
+  margin: auto; 
+  width: 550px;
+  height: 110px;
+  position: absolute; 
+  font-weight: bold; 
+  color: #FF0000
+}
+
 .sendButton {
     background-color: #FFCA3A;
     border: none;

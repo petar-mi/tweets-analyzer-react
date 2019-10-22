@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Posts from './Posts';
 import Spinner from './Spinner';
-import styles from './SendReq.module.scss';
+import styles from './styles/SendReq.module.scss';
 
 
 class SendReq extends Component {
@@ -16,6 +16,7 @@ class SendReq extends Component {
         userDbObj: {},
         showSpinner: false,
         showTwAccountNonExistentMessage: false,
+        hideInputDiv: false,
     }
 
     componentDidMount() {
@@ -30,8 +31,8 @@ class SendReq extends Component {
     postDataHandler = (username) => {
         this.setState({ showSpinner: true });
 
-        // axios.get(`http://localhost:8080/checkUser/${username}`)
-            axios.get(`https://my-express-server.herokuapp.com/checkUser/${username}`)
+         axios.get(`http://localhost:8080/checkUser/${username}`)
+            //axios.get(`https://my-express-server.herokuapp.com/checkUser/${username}`)
             .then(response => {
                 console.log(response);
                 console.log(this.state.userDbObj);
@@ -59,7 +60,9 @@ class SendReq extends Component {
 
     bezArhiviranihPodatakaHandler = () => {
         this.setState({
-            showSpinner: true
+            showSpinner: true,
+            prikaziUpitnik: false,
+            hideInputDiv: true,
         });
 
         setTimeout(() => this.setState({ showComponent: true }), 200); // potrebno je dati vremena da se ucita spinner
@@ -68,7 +71,9 @@ class SendReq extends Component {
     saArhiviranimPodatacimaHandler = () => {
         this.setState({
             includeArchivedTweets: true,
-            showSpinner: true
+            showSpinner: true,
+            prikaziUpitnik: false,
+            hideInputDiv: true,
         });
 
         setTimeout(() => this.setState({ showComponent: true }), 200); // potrebno je dati vremena da se ucita spinner
@@ -110,12 +115,12 @@ class SendReq extends Component {
             </div>
         );
 
-        const twAccountNonExistentMessage = <div style={{ fontSize: "35px", top: "400px", bottom: 0, right: 0, left: 0, margin: 'auto', width: "550px", height: "110px", position: "absolute", fontWeight: "bold", color: "#FF0000" }}>Twitter account doesn't exist. Please try again.</div>;// styles imitira stil centered klase od inputa iznad, s tim sto dodaje top=400px kako bi se smestilo ispod
+        const twAccountNonExistentMessage = <div className={styles.twAccountNonExistentMessage}>Twitter account doesn't exist. Please try again.</div>;// styles imitira stil centered klase od inputa iznad, s tim sto dodaje top=400px kako bi se smestilo ispod
 
         return (
-            <div className="NewPost" style={{ backgroundColor: '#333333', textAlign: "center" }}>
+            <div style={{ textAlign: "center" }}>
 
-                {this.state.prikaziUpitnik ? upitnik : inputDiv}
+                {this.state.prikaziUpitnik ? upitnik : this.state.hideInputDiv ? null : inputDiv}
                 {this.state.showTwAccountNonExistentMessage ? twAccountNonExistentMessage : null}
                 {this.state.showSpinner ? <Spinner /> : null}
                 {this.state.showComponent ? <Posts user={this.state.username}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-import styles from './SingleTweet.module.css';
+import styles from './styles/SingleTweet.module.css';
 
 class SingleTweet extends Component {
     state = {

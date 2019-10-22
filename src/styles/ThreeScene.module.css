@@ -1,0 +1,47 @@
+.canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 0;
+        margin: 0
+}
+
+.tweetsList {
+    clear: right;
+    padding-top: 20px;
+    color: #e6e6e6; 
+    text-align: center
+}
+
+.popup {
+    margin: auto; 
+    position: relative;
+    width: 800px;
+    height: 500px;
+    background-color: #404040; 
+    opacity: 0.95
+}
+
+.closePopupButton {
+    background-color: #404040;
+    color: #e6e6e6; 
+    padding: 5px; 
+    margin: 15px; 
+    float: right; 
+    cursor: pointer
+}
+
+.categoryHeading {
+    text-align: center; 
+    margin: auto; 
+    padding: 20px 0 0 20px; 
+    color: #FFCA3A; 
+    font-size: 2em; 
+    width: 90%
+}
+
+.categorySubtitleNote {
+    font-size: small; 
+    margin: auto; 
+    padding-top: 10px
+}

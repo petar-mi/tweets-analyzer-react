@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import socketIOClient from "socket.io-client";
-import Category from './Category';
 import ThreeScene from './ThreeScene';
-
 
 
 class Posts extends Component {
@@ -30,8 +28,8 @@ class Posts extends Component {
             { cat: "unknown", quantity: 0, ratio: 0, prevRatio: 0, displayTweets: false, yPosition: -4.25, xPosition: -4, sphereY: -1, sphereX: 0 },
         ],
         //endpoint: "http://192.168.0.16:8080/my-namespace", // // lokalna adresa za Buska Linux on lenovo laptop 
-        //endpoint: "http://127.0.0.1:8080/my-namespace", // lokalna adresa za Zec Linux on desktop nvme M.2
-        endpoint: "https://my-express-server.herokuapp.com/my-namespace",
+        endpoint: "http://127.0.0.1:8080/my-namespace", // lokalna adresa za Zec Linux on desktop nvme M.2
+        //endpoint: "https://my-express-server.herokuapp.com/my-namespace",
         twAccountNonExistent: false,
         showTwAccountNonExistentMessage: false,
         userDbObj: this.props.userDbObj,
@@ -56,8 +54,8 @@ class Posts extends Component {
     sumValues = obj => obj.reduce((a, b) => a + b.quantity, 0);
 
     sendToServerHandler = () => {
-        // axios.post('http://localhost:8080/feed', {
-        axios.post('https://my-express-server.herokuapp.com/feed', {
+        axios.post('http://localhost:8080/feed', {
+        //axios.post('https://my-express-server.herokuapp.com/feed', {
             editedTweets: this.state.tweets,
             userDbObj: this.state.userDbObj
         })
@@ -144,8 +142,8 @@ class Posts extends Component {
         socket.on('error', console.error.bind(console));
         socket.on('message', console.log.bind(console));
 
-        // axios.get(`http://localhost:8080/user/${this.props.user}`, {
-        axios.get(`https://my-express-server.herokuapp.com/user/${this.props.user}`, {
+         axios.get(`http://localhost:8080/user/${this.props.user}`, {
+        //axios.get(`https://my-express-server.herokuapp.com/user/${this.props.user}`, {
             params: {
                 userDbObj: this.state.userDbObj
             }
@@ -168,35 +166,16 @@ class Posts extends Component {
     }
 
     render() {
-
-        let categories = <p style={{ textAlign: 'center' }}>{this.state.errorMessage}</p>;
-
-
-        let toServerButton = <button onClick={this.sendToServerHandler} >Send all back to server</button>;
-
         this.state.count.map(item => <p style={{ textAlign: 'center' }}>{this.state.errorMessage}</p>);
-
 
         if (!this.state.errorMessage) {
             this.state.count.forEach(item => {
                 if (item) return console.log(`${item.cat}: ` + item.quantity + "px");
             });
             console.log("ukupno analizirano do sada: " + this.sumValues(this.state.count));
-
-            categories = this.state.count.map(item => item.quantity > 0 ? <Category clicked={(e) => this.categorySelectedHandler(e, item.cat)}
-                quantity={item.quantity}
-                display={item.displayTweets}
-                totalTweetsCount={this.sumValues(this.state.count)}
-                categoryName={item.cat}
-                categoryEdited={(e) => this.categoryEdited(e)}
-                tweets={this.state.tweets}
-                key={item.cat} /> : null)
         }
         return (
-            <section className="Posts">
-                {this.state.showToServerButton ? toServerButton : null}
-                {categories}
-
+            <section>
                 {this.state.twAccountNonExistent ? this.refreshPage() : <ThreeScene count={this.state.count}
                     tweets={this.state.tweets}
                     totalTweetsCount={this.sumValues(this.state.count)}

@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import helveticaBold from './helvetiker_bold.typeface.json';
 import SingleTweet from './SingleTweet';
+import styles from './styles/ThreeScene.module.css';
 
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
@@ -182,7 +183,6 @@ class ThreeScene extends Component {
                 this[item.cat + "Material"].opacity = 0;
                 this[item.cat + "Mesh"].position.z = -2;
             }
-
         });
 
         if (this.props.showToServerButton && !this.sendToServerGeometry) { // kada poslednji analizirani tweet stigne sa servera u parent component kreiramo objekat SEND ALL BACK TO SERVER 
@@ -256,18 +256,18 @@ class ThreeScene extends Component {
         }
 
         let popUp = (
-            <div style={{ margin: 'auto', position: 'relative', width: '800px', height: '500px', backgroundColor: '#404040', opacity: '0.95' }}>
+            <div className={styles.popup}>
                 <div>
-                <button style={{ backgroundColor: '#404040', color: '#e6e6e6', padding: "5px", margin: '15px', float: 'right', cursor: 'pointer' }} onClick={() => this.setState({ showPopup: false })}> X </button>
-                    <div style={{ textAlign: 'center', margin: 'auto', padding: "20px 0 0 20px", color: '#FFCA3A', fontSize: '2em', width: '90%' }}>
+                <button className={styles.closePopupButton} onClick={() => this.setState({ showPopup: false })}> X </button>
+                    <div className={styles.categoryHeading}>
                         <div style={{ display: 'inline-block' }}>
                             <strong >{imeKategorijeCamelized}</strong>
-                            <p style={{ fontSize: 'small', margin: 'auto', paddingTop: '10px' }}>(Click on a tweet to open/close category selection)</p>
+                            <p className={styles.categorySubtitleNote}>(Click on a tweet to open/close category selection)</p>
                         </div>
                     </div>
                     
                 </div>
-                <div style={{ clear: 'right', paddingTop: '20px', color: '#e6e6e6', textAlign: 'center' }}> {this.props.tweets.map(tweet => {
+                <div className={styles.tweetsList}> {this.props.tweets.map(tweet => {
                     return tweet.category === imeKategorije ?
                         <SingleTweet
                             key={tweet.id}
@@ -282,15 +282,8 @@ class ThreeScene extends Component {
 
         return (
             <div>
-                <div
-                    style={{
-                        position: 'fixed',
-                        top: '0px',
-                        left: '0px',
-                        padding: '0px',
-                        margin: '0px'
-                    }}
-                    ref={mount => { this.mount = mount }}
+                <div className={styles.canvas}
+                     ref={mount => { this.mount = mount }}
                 />
                 {this.state.showPopup ? popUp : null}
             </div>
