@@ -3,9 +3,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import helveticaBold from './helvetiker_bold.typeface.json';
 import SingleTweet from './SingleTweet';
+import styles from './styles/ThreeScene.module.css';
 
-var raycaster = new THREE.Raycaster();
-var mouse = new THREE.Vector2();
 
 class ThreeScene extends Component {
     state = {
@@ -14,11 +13,8 @@ class ThreeScene extends Component {
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("componentDidUpdate");
-
         this.props.count.forEach(item => {
-
-            if (item.quantity > 0 && !this[item.cat + "Geometry"]) { // stvara nove objekte samo ako je pozitivan quantity i ako vec nisu stvoreni 
+            if (item.quantity > 0 && !this[item.cat + "Geometry"]) { // creates new objects only when a category contains tweets (item.quantity > 0) and if they haven't been created already 
                 console.log(item);
                 if (this.props.showSpinner) this.props.hideSpinner();
                 this[item.cat + "Geometry"] = new THREE.TextGeometry(`${item.cat}`, {
@@ -31,10 +27,10 @@ class ThreeScene extends Component {
                     // bevelSize: 8,
                     // bevelSegments: 5
                 });
-                this[item.cat + "Material"] = new THREE.MeshPhongMaterial({ color: "#44A1A0", transparent: true, flatShading: true }); // 44A1A0
+                this[item.cat + "Material"] = new THREE.MeshPhongMaterial({ color: "#44A1A0", transparent: true, flatShading: true }); 
                 this[item.cat + "Material"].opacity = 0;
                 this[item.cat + "Mesh"] = new THREE.Mesh(this[item.cat + "Geometry"], this[item.cat + "Material"]);
-                this[item.cat + "Mesh"].position.set(item.xPosition, item.yPosition, -2); // pocetna z=-2 je da se ne bi preklapali nevidljivi sa objektima koji ce postati vidljivi nakon sto im se poveca quantity
+                this[item.cat + "Mesh"].position.set(item.xPosition, item.yPosition, -2); // sets intital z=-2 for the invisible objects not to interfere with the visible ones (probably unnecessery now, since not all the objects are created initially, but only when they containt tweets)
                 this[item.cat + "Mesh"].callback = this.objectClickHandler;
 
                 this.scene.add(this[item.cat + "Mesh"]); 
@@ -43,15 +39,13 @@ class ThreeScene extends Component {
     }
 
     componentDidMount() {
-        // console.log("componentDidMount");
-        // console.log(this.props);
+
+        this.raycaster = new THREE.Raycaster();
+        this.mouse = new THREE.Vector2();
         this.scene = new THREE.Scene()
-
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
         this.camera.position.z = 8;
- 
-        console.log("this.camera.position.x, this.camera.position.y, this.camera.position.z", this.camera.position.x, this.camera.position.y, this.camera.position.z);
+         console.log("this.camera.position.x, this.camera.position.y, this.camera.position.z", this.camera.position.x, this.camera.position.y, this.camera.position.z);
         //ADD RENDERER
         this.renderer = new THREE.WebGLRenderer({ antialias: true })
         this.renderer.setClearColor('#333333')
@@ -63,7 +57,7 @@ class ThreeScene extends Component {
         this.font = this.loader.parse(helveticaBold);
 
         this.pointLight = new THREE.PointLight(0xdddddd);
-        this.pointLight.position.set(0, 0, 10); // staviti 30 ako se radi sfera
+        this.pointLight.position.set(0, 0, 10); 
         this.scene.add(this.pointLight);
 
         this.ambientLight = new THREE.AmbientLight(0x505050);
@@ -71,11 +65,11 @@ class ThreeScene extends Component {
 
         window.addEventListener('resize', this.onWindowResize, false);
 
-        this.mount.addEventListener('mousemove', event => this.onMouseMove(event), false); // omogucava funkcionalnost raycaster-a
+        this.mount.addEventListener('mousemove', event => this.onMouseMove(event), false); // enables raycaster functionality
 
         this.mount.addEventListener('click', event => this.onMouseClick(event), false);
 
-        new OrbitControls(this.camera, this.renderer.domElement); // kontrolise rotacije i zoom pomocu misa, (ne mora da se dodeli nekoj promenjivoj da bi radilo)
+        new OrbitControls(this.camera, this.renderer.domElement); // controls scene rotation and zoom, works just like this (no need to be stored as a const/var)
 
         this.onHoverObject = {};
 
@@ -88,14 +82,14 @@ class ThreeScene extends Component {
 
     onMouseMove = event => {
         event.preventDefault();
-        mouse.x = ((event.clientX - this.mount.offsetLeft) / this.mount.clientWidth) * 2 - 1;
-        mouse.y = - ((event.clientY - this.mount.offsetTop) / this.mount.clientHeight) * 2 + 1;
+        this.mouse.x = ((event.clientX - this.mount.offsetLeft) / this.mount.clientWidth) * 2 - 1;
+        this.mouse.y = - ((event.clientY - this.mount.offsetTop) / this.mount.clientHeight) * 2 + 1;
     }
 
     onMouseClick = event => {
         event.preventDefault();
         console.log(event.target);
-        if (this.intersectBool) { // registruje klik samo ako ima preseka sa vidljivim objektima
+        if (this.intersectBool) { // registers a click only when there is an intersection with visible objects
             this.clicked = !this.clicked;
         } else if (!this.intersectBool && this.state.showPopup) {
             this.setState({ showPopup: false });
@@ -111,18 +105,17 @@ class ThreeScene extends Component {
         this.clicked = !this.clicked;
         if (!this.state.sentToServer) {
 
+            this.props.sendToServer(); // sends tweets back to server using function from parent component
 
-            this.props.sendToServer();
+            this.setState({ sentToServer: true }); 
 
-            this.setState({ sentToServer: true }); // salje tvitove nazad na server putem funkcije koja se nalazi u parent component
-
-            // na ovaj nacin se brise zeljeni objekat
-            for (let i = 0; i < this.scene.children.length; i++) {
+            
+            for (let i = 0; i < this.scene.children.length; i++) { // iterates scene objects and deletes an object with specified geometry
                 if (this.scene.children[i].geometry && this.scene.children[i].geometry.parameters.text === "SEND ALL BACK TO SERVER") {
                     this.scene.remove(this.scene.children[i]);
                 }
             }
-            // zatim kreiramo novi objekat sa izmenjenim tekstom
+            // then a new object is created with a different string
             this.sendToServerSentGeometry = new THREE.TextGeometry('                  SENT', { font: this.font, size: 0.5, height: 0.15, curveSegments: 20 });
             this.sendToServerSentMaterial = new THREE.MeshPhongMaterial({ color: "#f79d01", transparent: true, flatShading: true });
             this.sendToServerSentMaterial.opacity = 1;
@@ -133,10 +126,9 @@ class ThreeScene extends Component {
     }
 
     categorySelectedHandler = (e) => {
-        console.log("ispisivanje iz Category.js: " + e.tweet.text + " " + e.tweet.id + " " + e.tweet.categoryInput);
-        console.log("rucno unesena kategorija: " + e.newCat);
+        console.log("Logging from ThreeScene.js: " + e.tweet.text + " " + e.tweet.id + " " + e.tweet.categoryInput);
+        console.log("Category entered manually: " + e.newCat);
         this.props.categoryEdited(e);
-
     }
 
     onWindowResize = () => {
@@ -170,22 +162,21 @@ class ThreeScene extends Component {
                         this[item.cat + "Mesh"].scale.y += 0.015;
                     }
                 }
-                if (item.ratio < item.prevRatio || this.onHoverObject.name) { // uslov: this.onHoverObject.name je da bi se objekti smanjivali ukoliko je prethodno preko njih predjeno misem. dokle god je mis na njima velicina se setuje na hardcoded vrednost 6
+                if (item.ratio < item.prevRatio || this.onHoverObject.name) { // condition: this.onHoverObject.name is set so that objects' size decreases if the mouse previously hoverd above them. As long as the mouse hovers over them their size is set to * 6
                     if (this[item.cat + "Mesh"].scale.x > item.ratio * 6) {
-                        if (this.onHoverObject.name && this[this.onHoverObject.name + "Material"].color !== "#44A1A0") this[this.onHoverObject.name + "Material"].color.set("#44A1A0"); // resetuje boju ako mis vise nije iznad objekta
+                        if (this.onHoverObject.name && this[this.onHoverObject.name + "Material"].color !== "#44A1A0") this[this.onHoverObject.name + "Material"].color.set("#44A1A0"); // resets the color if the mouse is not hovering above the object anymore
                         this[item.cat + "Mesh"].scale.x -= 0.015;
                         this[item.cat + "Mesh"].scale.y -= 0.015;
                     }
                 }
             }
-            if (item.quantity === 0 && this[item.cat + "Material"]) { // objekat ponovo postaje proziran ukoliko je quantity === 0 i vraca se na z poziciju -2 da se ne bi preklapao sa vidljivim
+            if (item.quantity === 0 && this[item.cat + "Material"]) { // object becomes invisible if quantity drops to 0 and gets positioned behind (z = -2) // should better be deleted instead
                 this[item.cat + "Material"].opacity = 0;
                 this[item.cat + "Mesh"].position.z = -2;
             }
-
         });
 
-        if (this.props.showToServerButton && !this.sendToServerGeometry) { // kada poslednji analizirani tweet stigne sa servera u parent component kreiramo objekat SEND ALL BACK TO SERVER 
+        if (this.props.showToServerButton && !this.sendToServerGeometry) { // when the last analysed tweets arrives from the server to parent component SEND ALL BACK TO SERVER object is created
 
             this.sendToServerGeometry = new THREE.TextGeometry("SEND ALL BACK TO SERVER", { font: this.font, size: 0.5, height: 0.15, curveSegments: 20 });
             this.sendToServerMaterial = new THREE.MeshPhongMaterial({ color: "#e6b800", transparent: true, flatShading: true });
@@ -201,26 +192,26 @@ class ThreeScene extends Component {
     }
 
     renderScene = () => {
-        // update the picking ray with the camera and mouse position
-        raycaster.setFromCamera(mouse, this.camera);
+        
+        this.raycaster.setFromCamera(this.mouse, this.camera); // update the picking ray with the camera and mouse position
 
         // calculate objects intersecting the picking ray
-        var intersects = raycaster.intersectObjects(this.scene.children, true); // drugi argumenat je po defaultu false, a to je da rekurzivno proverava i decu objekata na koje naidje (mora biti true ako se objekti dodaju na parent koji se onda dodaje sceni!)
+        var intersects = this.raycaster.intersectObjects(this.scene.children, true); // second argument decides recursively going through intersection object's children and must be set to true in this case (default value is false)
 
-        //sledeci red ispituje da li se u nizu preseka nalazi vidljivi objekat i onda javascipt some() funkcija vraca true, inace vraca flase, kao i u slucaju da preseka ni nema (intersects.length <= 0)       
+        // using some() function checks if intersection array contains visible objects        
         intersects.length > 0 ? this.intersectBool = intersects.some(intersect => intersect.object.material.opacity !== 0) : this.intersectBool = false;
 
-        if (intersects.length === 0 && this.sendToServerMaterial && this.sendToServerMaterial.color.set !== "#e6b800") this.sendToServerMaterial.color.setHex(0xE6B800); // resetuje boju objekta SEND ALL BACK TO SERVER ako mis nije iznad njega
+        if (intersects.length === 0 && this.sendToServerMaterial && this.sendToServerMaterial.color.set !== "#e6b800") this.sendToServerMaterial.color.setHex(0xE6B800); // resets SEND ALL BACK TO SERVER object color if mouse is not hovering above it
 
         for (var i = 0; i < intersects.length; i++) {
             if (intersects[i].object.material.opacity !== 0) { // only for visible objects
-                // changes color and size of an obj mouse is hovering on
+                // changes color and size of an object mouse is hovering above
                 if (intersects[i].object.geometry.parameters.text !== 'SEND ALL BACK TO SERVER' && intersects[i].object.geometry.parameters.text !== '                  SENT') { // uvecavanje text onHover ne vazi za SEND ALL BACK TO SERVER
                     intersects[i].object.material.color.setHex(0xff0000);
                     intersects[i].object.scale.x = 3.5;
                     intersects[i].object.scale.y = 3.5;
                     if (this.clicked) { // 
-                        this.intersectBool = false; // resetuje flag za klik
+                        this.intersectBool = false; // resets click bool
                         intersects[i].object.callback();
                     }
                     this.onHoverObject = {
@@ -232,7 +223,7 @@ class ThreeScene extends Component {
                 if (intersects[i].object.geometry.parameters.text === 'SEND ALL BACK TO SERVER') {
                     intersects[i].object.material.color.setHex(0xff0000);
                     if (this.clicked) { // 
-                        this.intersectBool = false; // resetuje flag za klik
+                        this.intersectBool = false; // resets click bool
                         intersects[i].object.callback();
                     }
                 }
@@ -244,31 +235,31 @@ class ThreeScene extends Component {
     render() {
 
         this.props.count.map(item => console.log("item.cat, item.quantity, item.ratio, item.prevRatio", item.cat, item.quantity, item.ratio, item.prevRatio));
-        let imeKategorije = "";
-        let imeKategorijeCamelized = ""
+        let categoryName = "";
+        let categoryNameCamelized = ""
         if (this.state.showPopup) {
 
-            imeKategorije = this.onHoverObject.name;
+            categoryName = this.onHoverObject.name;
 
-            imeKategorijeCamelized = this.onHoverObject.name.replace(/\w+/g, function (match) {
+            categoryNameCamelized = this.onHoverObject.name.replace(/\w+/g, function (match) {
                 return match.charAt(0).toUpperCase() + match.substring(1).toLowerCase();
             });
         }
 
         let popUp = (
-            <div style={{ margin: 'auto', position: 'relative', width: '800px', height: '500px', backgroundColor: '#404040', opacity: '0.95' }}>
+            <div className={styles.popup}>
                 <div>
-                <button style={{ backgroundColor: '#404040', color: '#e6e6e6', padding: "5px", margin: '15px', float: 'right', cursor: 'pointer' }} onClick={() => this.setState({ showPopup: false })}> X </button>
-                    <div style={{ textAlign: 'center', margin: 'auto', padding: "20px 0 0 20px", color: '#FFCA3A', fontSize: '2em', width: '90%' }}>
+                <button className={styles.closePopupButton} onClick={() => this.setState({ showPopup: false })}> X </button>
+                    <div className={styles.categoryHeading}>
                         <div style={{ display: 'inline-block' }}>
-                            <strong >{imeKategorijeCamelized}</strong>
-                            <p style={{ fontSize: 'small', margin: 'auto', paddingTop: '10px' }}>(Click on a tweet to open/close category selection)</p>
+                            <strong >{categoryNameCamelized}</strong>
+                            <p className={styles.categorySubtitleNote}>(Click on a tweet to open/close category selection)</p>
                         </div>
                     </div>
                     
                 </div>
-                <div style={{ clear: 'right', paddingTop: '20px', color: '#e6e6e6', textAlign: 'center' }}> {this.props.tweets.map(tweet => {
-                    return tweet.category === imeKategorije ?
+                <div className={styles.tweetsList}> {this.props.tweets.map(tweet => {
+                    return tweet.category === categoryName ?
                         <SingleTweet
                             key={tweet.id}
                             id={tweet.id}
@@ -282,19 +273,13 @@ class ThreeScene extends Component {
 
         return (
             <div>
-                <div
-                    style={{
-                        position: 'fixed',
-                        top: '0px',
-                        left: '0px',
-                        padding: '0px',
-                        margin: '0px'
-                    }}
-                    ref={mount => { this.mount = mount }}
+                <div className={styles.canvas}
+                     ref={mount => { this.mount = mount }}
                 />
                 {this.state.showPopup ? popUp : null}
             </div>
         )
     }
 }
+
 export default ThreeScene;

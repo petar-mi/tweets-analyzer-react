@@ -1,49 +1,52 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Posts from './Posts';
+import Tweets from './Tweets';
 import Spinner from './Spinner';
-import styles from './SendReq.module.scss';
+import styles from './styles/SendReq.module.scss';
 
 
 class SendReq extends Component {
     state = {
         username: '',
-        showComponent: false,
-        prikaziUpitnik: false,
-        response: false,
+        showTweetsComponent: false,
+        showQuestion: false,
         archivedTweets: [],
         includeArchivedTweets: false,
         userDbObj: {},
         showSpinner: false,
         showTwAccountNonExistentMessage: false,
+        hideInputDiv: false,
+        connectionString: ""
     }
 
     componentDidMount() {
-        // console.log(this.props); // ovde mozemo videti props koje nam daje react-router kao sto su history, location i match
-        // console.log(this.state);
+        // console.log(this.props); // logs props given by react-router such as history, location & match
+
+        // checks for env var REACT_APP_MY_MACHINE to set the connection string
+        // react env vars must start with REACT_APP to be recognized by react app (the var is stored in hidden .bashrc file in Home directory)
+        process.env.REACT_APP_MY_MACHINE && process.env.REACT_APP_MY_MACHINE === "zekan" ? this.setState({ connectionString: "http://127.0.0.1:8080" }) : this.setState({ connectionString: "https://my-express-server.herokuapp.com" });
     }
 
     componentDidUpdate() {
-        //console.log("componentDidUpdate", this.state.showSpinner); // ovde mozemo videti props koje nam daje react-router kao sto su history, location i match
+        //console.log("componentDidUpdate", this.state.showSpinner);
     }
 
     postDataHandler = (username) => {
         this.setState({ showSpinner: true });
 
-        // axios.get(`http://localhost:8080/checkUser/${username}`)
-            axios.get(`https://my-express-server.herokuapp.com/checkUser/${username}`)
+        axios.get(`${this.state.connectionString}/checkUser/${username}`)
             .then(response => {
                 console.log(response);
                 console.log(this.state.userDbObj);
-                if (response.data.message === "NE postoji u bazi") {
+                if (response.data.message === "doesn't exist in db") {
                     console.log(this.state);
-                    this.setState({ showComponent: true })
+                    this.setState({ showTweetsComponent: true })
                     console.log(this.state);
-                } else if (response.data.message === "postoji u bazi") {
+                } else if (response.data.message === "exists in db") {
 
                     console.log(response.data.tweetsArray);
                     this.setState({
-                        prikaziUpitnik: true,
+                        showQuestion: true,
                         showSpinner: false,
                         archivedTweets: response.data.tweetsArray,
                         userDbObj: response.data.user,
@@ -57,30 +60,33 @@ class SendReq extends Component {
             });
     }
 
-    bezArhiviranihPodatakaHandler = () => {
+    withOutArchivedTweetsHandler = () => {
         this.setState({
-            showSpinner: true
+            showSpinner: true,
+            showQuestion: false,
+            hideInputDiv: true,
         });
 
-        setTimeout(() => this.setState({ showComponent: true }), 200); // potrebno je dati vremena da se ucita spinner
+        setTimeout(() => this.setState({ showTweetsComponent: true }), 200); // some time is needed for spinner to load completely
     }
 
-    saArhiviranimPodatacimaHandler = () => {
+    withArchivedTweetsHandler = () => {
         this.setState({
             includeArchivedTweets: true,
-            showSpinner: true
+            showSpinner: true,
+            showQuestion: false,
+            hideInputDiv: true,
         });
 
-        setTimeout(() => this.setState({ showComponent: true }), 200); // potrebno je dati vremena da se ucita spinner
+        setTimeout(() => this.setState({ showTweetsComponent: true }), 200); // some time is needed for spinner to load completely
     }
 
     showTwAccountNonExistentMessageHandler = () => {
-        this.setState({
+        this.setState({ // resets this.state to initial values
             showTwAccountNonExistentMessage: true,
             username: '',
-            showComponent: false,
-            prikaziUpitnik: false,
-            response: false,
+            showTweetsComponent: false,
+            showQuestion: false,
             archivedTweets: [],
             includeArchivedTweets: false,
             userDbObj: {},
@@ -90,14 +96,14 @@ class SendReq extends Component {
 
 
     render() {
-        let upitnik = (
+        let question = (
             <div className={styles.centered} style={{ textAlign: 'center', color: '#999999' }}>
                 <div style={{ marginBottom: '25px' }}>
                     <p>User exists in a database.</p>
                     <p>Would you like to include archived tweets in the analysis?</p>
                 </div>
-                <button className={styles.noYesButton} style={{ float: 'left', marginLeft: '130px' }} onClick={this.bezArhiviranihPodatakaHandler} >No</button>
-                <button className={styles.noYesButton} style={{ float: 'right', marginRight: '130px' }} onClick={this.saArhiviranimPodatacimaHandler} >Yes</button>
+                <button className={styles.noYesButton} style={{ float: 'left', marginLeft: '130px' }} onClick={this.withOutArchivedTweetsHandler} >No</button>
+                <button className={styles.noYesButton} style={{ float: 'right', marginRight: '130px' }} onClick={this.withArchivedTweetsHandler} >Yes</button>
             </div>
         );
 
@@ -110,20 +116,20 @@ class SendReq extends Component {
             </div>
         );
 
-        const twAccountNonExistentMessage = <div style={{ fontSize: "35px", top: "400px", bottom: 0, right: 0, left: 0, margin: 'auto', width: "550px", height: "110px", position: "absolute", fontWeight: "bold", color: "#FF0000" }}>Twitter account doesn't exist. Please try again.</div>;// styles imitira stil centered klase od inputa iznad, s tim sto dodaje top=400px kako bi se smestilo ispod
+        const twAccountNonExistentMessage = <div className={styles.twAccountNonExistentMessage}>Twitter account doesn't exist. Please try again.</div>;// styles.twAccountNonExistentMessage is the same as styles.centered (applied above), but takes the value top: 400px so to be placed under input
 
         return (
-            <div className="NewPost" style={{ backgroundColor: '#333333', textAlign: "center" }}>
-
-                {this.state.prikaziUpitnik ? upitnik : inputDiv}
+            <div style={{ textAlign: "center" }}>
+                {this.state.showQuestion ? question : this.state.hideInputDiv ? null : inputDiv}
                 {this.state.showTwAccountNonExistentMessage ? twAccountNonExistentMessage : null}
                 {this.state.showSpinner ? <Spinner /> : null}
-                {this.state.showComponent ? <Posts user={this.state.username}
+                {this.state.showTweetsComponent ? <Tweets user={this.state.username}
                     userDbObj={this.state.userDbObj}
                     archivedTweets={this.state.archivedTweets}
                     includeArchivedTweets={this.state.includeArchivedTweets}
                     showTwAccountNonExistentMessage={() => this.showTwAccountNonExistentMessageHandler()}
                     twAccountNonExistentMessageState={this.state.showTwAccountNonExistentMessage}
+                    connectionString={this.state.connectionString}
                     showSpinner={this.state.showSpinner}
                     hideSpinner={() => this.setState({ showSpinner: false })} /> : null}
             </div>

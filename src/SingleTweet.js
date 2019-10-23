@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-import styles from './SingleTweet.module.css';
+import styles from './styles/SingleTweet.module.css';
 
 class SingleTweet extends Component {
     state = {
@@ -16,7 +16,7 @@ class SingleTweet extends Component {
     toggleInputHandler = (e) => {
         console.log(e.target);
         console.log("toggleInputHandler");
-        if (e.target.id === "tweetDiv") this.setState(prevState => ({ showCategoryInput: !prevState.showCategoryInput })); // zatvara select menu samo ako se klikne na sam text tweeta
+        if (e.target.id === "tweetDiv") this.setState(prevState => ({ showCategoryInput: !prevState.showCategoryInput })); // closes select menu only when clicked on tweet text
     }
 
     handleChange = selectedOption => {
@@ -33,7 +33,6 @@ class SingleTweet extends Component {
     render() {
 
         const options = this.props.count.map(item => {
-            //console.log(item);
             return {
                 value: item.cat, label: item.cat.replace(/\w+/g, function (match) {
                     return match.charAt(0).toUpperCase() + match.substring(1).toLowerCase();
